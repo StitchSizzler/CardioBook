@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">eisha-cardioBook(latest)</string>
+    <string name="add_new">New Entry</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="systolic">Systolic Pressure</string>
+    <string name="diastolic">Distolic Pressure</string>
+    <string name="heart">Heart Rate</string>
+    <string name="comment">Comment</string>
+</resources>
