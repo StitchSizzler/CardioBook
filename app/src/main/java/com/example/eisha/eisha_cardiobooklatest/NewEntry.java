@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class NewEntry extends AppCompatActivity {
     private EditText date;
     private EditText time;
@@ -41,26 +44,60 @@ public class NewEntry extends AppCompatActivity {
 
         saveButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                dateText = date.getText().toString();
-                if(TextUtils.isEmpty(dateText)) {date.setError("Please enter the date");}
-                timeText = time.getText().toString();
-                if(TextUtils.isEmpty(timeText)) {time.setError("Please enter the time");}
 
-                //heartText = Integer.parseInt(heartRate.getText().toString());
+                int save = 1;
+
+                // format reference: https://stackoverflow.com/questions/17416595/date-validation-in-android
+                dateText = date.getText().toString();
+                if(TextUtils.isEmpty(dateText)) {
+                    date.setError("Please enter the date");
+                    save = 0;
+                }
+                if (dateText== null || !dateText.matches("^([0-9]{4})-(0[1-9]|1[0-2])-(1[0-9]|0[1-9]|3[0-1]|2[1-9])$")) {
+                    date.setError("Invalid date format");
+                    save = 0;
+                }
+                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    format.parse(dateText);
+                }catch (ParseException e){
+                    date.setError("Invalid date format");
+                    save = 0;
+                }
+
+                timeText = time.getText().toString();
+                if(TextUtils.isEmpty(timeText)) {
+                    time.setError("Please enter the time");
+                    save = 0;
+                }
+                // Learned the pattern matching stuff by trial and error. Kind of proud :)
+                if (timeText== null || (!timeText.matches("^([0-1]+[0-9]):([0-5]+[0-9])$")) && !timeText.matches("^([0-2]+[0-3]):([0-5]+[0-9])$")) {
+                    time.setError("Invalid time format");
+                    save = 0;
+                }
+                SimpleDateFormat format1=new SimpleDateFormat("hh:mm");
+                try {
+                    format1.parse(timeText);
+                }catch (ParseException e){
+                    time.setError("Invalid time format");
+                    save = 0;
+                }
 
                 if(systolicPressure.getText().length() == 0) {
                     systolicPressure.setError("Please enter systolic pressure");
+                    save = 0;
                 } else {
                     systolicText = Integer.parseInt(systolicPressure.getText().toString());
                 }
                 if(diastolicPressure.getText().length() == 0) {
                     diastolicPressure.setError("Please enter diastolic pressure");
+                    save = 0;
                 } else {
                     diastolicText = Integer.parseInt(diastolicPressure.getText().toString());
-
                 }
                 if(heartRate.getText().length() == 0) {
                     heartRate.setError("Please enter heart rate");
+                    save = 0;
                     return;
                 } else {
                     heartText = Integer.parseInt(heartRate.getText().toString());
@@ -69,16 +106,17 @@ public class NewEntry extends AppCompatActivity {
                 commentText = comment.getText().toString();
 
 
+                if(save == 1) {
+                    importantEntry anEntry = new importantEntry(dateText, timeText, systolicText,
+                            diastolicText, heartText, commentText);
 
-                importantEntry anEntry = new importantEntry(dateText, timeText, systolicText,
-                        diastolicText, heartText, commentText);
-
-                Bundle result = new Bundle();
-                Intent returnIntent = new Intent(NewEntry.this, MainBook.class);
-                result.putSerializable("putresult", anEntry);
-                returnIntent.putExtra("result", result);
-                setResult(RESULT_OK, returnIntent);
-                finish();
+                    Bundle result = new Bundle();
+                    Intent returnIntent = new Intent(NewEntry.this, MainBook.class);
+                    result.putSerializable("putresult", anEntry);
+                    returnIntent.putExtra("result", result);
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
             }
         });
 

@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import static android.os.FileObserver.DELETE;
 
 public class Entry extends AppCompatActivity {
@@ -94,15 +97,40 @@ public class Entry extends AppCompatActivity {
                 String commentText = comment.getText().toString();*/
                 int save = 1;
 
-
+                // format reference: https://stackoverflow.com/questions/17416595/date-validation-in-android
                 dateText = date.getText().toString();
                 if(TextUtils.isEmpty(dateText)) {
                     date.setError("Please enter the date");
-                    save = 0;}
+                    save = 0;
+                }
+                if (dateText== null || !dateText.matches("^([0-9]{4})-(0[1-9]|1[0-2])-(1[0-9]|0[1-9]|3[0-1]|2[1-9])$")) {
+                    date.setError("Invalid date format");
+                    save = 0;
+                }
+                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    format.parse(dateText);
+                }catch (ParseException e){
+                    date.setError("Invalid date format");
+                    save = 0;
+                }
                 timeText = time.getText().toString();
                 if(TextUtils.isEmpty(timeText)) {
                     time.setError("Please enter the time");
-                    save = 0;}
+                    save = 0;
+                }
+                // Learned the pattern matching stuff by trial and error. Kind of proud :)
+                if (timeText== null || (!timeText.matches("^([0-1]+[0-9]):([0-5]+[0-9])$")) && !timeText.matches("^([0-2]+[0-3]):([0-5]+[0-9])$")) {
+                    time.setError("Invalid time format");
+                    save = 0;
+                }
+                SimpleDateFormat format1=new SimpleDateFormat("hh:mm");
+                try {
+                    format1.parse(timeText);
+                }catch (ParseException e){
+                    time.setError("Invalid time format");
+                    save = 0;
+                }
                 if(systolicPressure.getText().length() == 0) {
                     systolicPressure.setError("Please enter systolic pressure");
                     save = 0;
