@@ -5,6 +5,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Represents a single Entry
+ * Used by adapter
+ */
+
 public class importantEntry implements Serializable {
 
     private String date;
@@ -26,7 +31,6 @@ public class importantEntry implements Serializable {
     }
 
     // getter methods
-
     public String getDate() {return this.date;}
     public String getTime() {return this.time;}
     public Integer getSystolicPressure() {return this.systolicPressure;}
@@ -38,12 +42,10 @@ public class importantEntry implements Serializable {
     //Reference from: https://stackoverflow.com/questions/15776661/android-spinner-showing-object-reference-instead-of-string
     @Override
     public String toString() {
-        //DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        //String reportDate = df.format(date);
-
         String sysEnd = "";
         String diaEnd = "";
 
+        // check for abnormal pressures
         if(systolicPressure<90 || systolicPressure>140){
             sysEnd = "!";
         }
@@ -51,6 +53,7 @@ public class importantEntry implements Serializable {
             diaEnd = "!";
         }
 
+        // return what to display in listview
         return date+" | Systolic: "+Integer.toString(systolicPressure)+ " mm Hg"+sysEnd+
                 " | Diastolic: "+Integer.toString(diastolicPressure)+ " mm Hg" +diaEnd+ " | HeartRate: "+Integer.toString(heartRate) +" per minute";
     }

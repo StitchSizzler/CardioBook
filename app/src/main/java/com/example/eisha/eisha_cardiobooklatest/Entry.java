@@ -14,6 +14,10 @@ import java.text.SimpleDateFormat;
 
 import static android.os.FileObserver.DELETE;
 
+
+/**
+ * Represents the Entry object
+ */
 public class Entry extends AppCompatActivity {
     private EditText date;
     private EditText time;
@@ -29,8 +33,6 @@ public class Entry extends AppCompatActivity {
     private int heartText;
     private String commentText;
 
-
-    //boolean changed = false;  // decide if canges need to be saved
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -68,6 +70,7 @@ public class Entry extends AppCompatActivity {
             diastolicPressure.setTextColor(Color.parseColor("#ffd81b60"));
         }
 
+        // delete entry
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +80,7 @@ public class Entry extends AppCompatActivity {
             }
         });
 
+        // cancel changes to entry
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,16 +89,15 @@ public class Entry extends AppCompatActivity {
             }
         });
 
+        // save changes to entry
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // validate data and update
+
                 Intent doneIntent = new Intent(Entry.this, MainBook.class);
-                /*String dateText = date.getText().toString();
-                String timeText = time.getText().toString();
-                int systolicText = Integer.parseInt(systolicPressure.getText().toString());
-                int diastolicText = Integer.parseInt(diastolicPressure.getText().toString());
-                int heartText = Integer.parseInt(heartRate.getText().toString());
-                String commentText = comment.getText().toString();*/
+
+                // only save if everything valid
                 int save = 1;
 
                 // format reference: https://stackoverflow.com/questions/17416595/date-validation-in-android

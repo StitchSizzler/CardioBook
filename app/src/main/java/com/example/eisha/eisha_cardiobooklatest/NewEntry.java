@@ -13,6 +13,9 @@ import android.widget.TextView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/**
+ * Create new Entry object
+ */
 public class NewEntry extends AppCompatActivity {
     private EditText date;
     private EditText time;
@@ -45,6 +48,7 @@ public class NewEntry extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
+                // only save new entry if entry is valid
                 int save = 1;
 
                 // format reference: https://stackoverflow.com/questions/17416595/date-validation-in-android
@@ -103,6 +107,7 @@ public class NewEntry extends AppCompatActivity {
                     heartText = Integer.parseInt(heartRate.getText().toString());
 
                 }
+                // the only block that can be left blank
                 commentText = comment.getText().toString();
 
 
